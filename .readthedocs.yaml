@@ -1,0 +1,27 @@
+# Read the Docs configuration file
+# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+#
+# Required
+version: 2
+#
+# Build documentation in the docs/ directory with Sphinx
+sphinx:
+   configuration: conf.py
+
+build:
+   os: ubuntu-22.04
+   tools:
+      python: '3.11'
+   apt_packages:
+             # Graphviz is needed for sphinx.ext.graphviz
+      - graphviz
+
+# Optionally set the version of Python and requirements required to build your docs
+python:
+   install:
+   - requirements: requirements.txt
+
+# Avoid cloning submodules
+submodules:
+   exclude: all
+

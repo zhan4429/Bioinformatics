@@ -1,4 +1,4 @@
-Bioinformatics notes from Yucheng Zhang from Purdue RCAC
+Bioinformatics notes from Yucheng Zhang at Purdue RCAC
 =========================================================
 
 .. toctree::
