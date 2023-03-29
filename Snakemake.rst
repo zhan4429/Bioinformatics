@@ -3,5 +3,5 @@ Snakemake
 .. toctree::
    :titlesonly:
 
-    Snakemake/hello_world
+    snakemake/hello_world
 

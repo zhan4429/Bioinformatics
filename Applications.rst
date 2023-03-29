@@ -4,5 +4,5 @@ Applications
 .. toctree::
    :titlesonly:
 
-    Applications/alphafold
+    applications/alphafold
 
