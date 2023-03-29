@@ -1,3 +1,5 @@
+.. _backbone-label:
+
 Alphafold
 ==============================
 
