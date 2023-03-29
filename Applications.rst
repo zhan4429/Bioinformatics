@@ -1,4 +1,4 @@
-Snakemake
+Applications
 ==============================================
 .. toctree::
    :titlesonly:
