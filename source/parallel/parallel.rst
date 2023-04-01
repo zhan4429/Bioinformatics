@@ -23,8 +23,23 @@ We can use multiple inputs per task, distinguishing the inputs by ``{1}, {2}``, 
 Note that ``--link`` is needed so that 1 is paired with 4, 2 with 5, etc., instead of doing all possible pairs amongst the two sets.
 
 
+Combinatorials
+~~~~~~~~~~~~~~~~
+You can keep adding ``:::`` and ``::::`` to add additional arguments, and these will be combined to generate all possible combinations. This is extremely useful for testing commands with different combinations of input parameters::
+
+	parallel --dry-run -k -j 4 Rscript run_analysis.R {1} {2} ::: `seq 1 2` ::: A B C
+
+The output will look like this::
+
+	Rscript run_analysis.R 1 A
+	Rscript run_analysis.R 1 B
+	Rscript run_analysis.R 1 C
+	Rscript run_analysis.R 2 A
+	Rscript run_analysis.R 2 B
+	Rscript run_analysis.R 2 C
+
 Blast example
-~~~~~~~~~~~~~~~~~``
+~~~~~~~~~~~~~~~~~
 Here's our example task list, task.lst::
 
 	../blast/data/protein1.faa
@@ -67,4 +82,22 @@ Some things to notice:
 - The --resume and --joblog flags allow you to easily restart interrupted work without redoing already completed tasks.
 - The --progress flag causes a progress bar to be displayed.
 - In this case, only one of the three inputs to run-blast.sh is provided in the task list. The second argument is determined from the first, after discarding the path and file extension, and the third is constant across tasks.
+
+
+Bowtie2
+~~~~~~~~~~~~~
+We can design a bash script with the bowtie2 command for each pair separately . Obviously if dealing with hundreds of files this could become cumbersome::
+
+	module load bowtie2
+	bowtie2 --threads 4 -x tair -k1 -q -1 SRR4420293_1.fastq.gz -2 SRR4420293_2.fastq.gz -S first_R1.sam >& first.log
+	..........................
+	bowtie2 --threads 4 -x tair -k1 -q -1 SRR4420295_1.fastq.gz -2 SRR4420295_2.fastq.gz -S fifth_R1.sam >& third.log
+
+GNU parallel let’s us automate this task by using a combination of substitution and separators notably ``:::`` and ``:::+``. We can also make optimum use of the available threads::
+
+	module load bowtie2
+	time parallel -j2 "bowtie2 --threads 4 -x tair -k1 -q -1 {1} -2 {2} -S {1/.}.sam >& {1/.}.log" ::: fastqfiles/*_1.fastq.gz :::+ fastqfiles/*_2.fastq.gz
+
+
+You may have also noticed some new syntax where we are using {1}, {2}, {1/.} and {2/.}. The {1} will give us the first file and {2} the second from the list taking two at a time. The {1/.} and {2/.} will take the prefix of the file name before the “.”
 
