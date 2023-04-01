@@ -183,3 +183,17 @@ now our commands become::
 
 
 
+Making a bigWig coverage file
+++++++++++++++++++++++++++++++++
+
+Since what we primarily care about is the “coverage” rather than individual alignments, we can turn the BAM file into a so-called BigWig file.
+
+You can’t just make a bigWig; that would be too easy. First, you turn your BAM files into bedGraph, then you take each bedGraph and turn it into a bigWig. Sigh… Thankfully we have it all automated. The following steps will be necessary::
+
+	# Turn each BAM file into bedGraph coverage. The files will have the .bg extension.
+	cat ids.txt | parallel "bedtools genomecov -ibam  bam/{}.bam -split -bg  > bam/{}.bg"
+
+	# Convert each bedGraph coverage into bigWig coverage. The files will have the .bw extension.
+	cat ids.txt | parallel "bedGraphToBigWig bam/{}.bg  ${IDX}.fai bam/{}.bw"
+
+
