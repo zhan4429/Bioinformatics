@@ -2,6 +2,20 @@
 
 find and xargs
 ==============================
+
+find
+~~~~~~~~~~
+``find`` Finds files matching an expression. The ``find`` command is similar to ls but in many ways it is more powerful. It can be used to recursively search the directory tree for a specified path name, seeking files that match a given Boolean expression (a test which returns true or false.
+
+``find . -name "*.embl"`` 
+This command will return the files which name has the ``.embl`` suffix.
+
+``find . -type d``. 
+This command will return all the subdirectories contained in the current directory.
+
+``-mtime`` search files by modifying date ``-atime`` search files by last access date ``-size`` search files by file size ``-user`` search files by user they belong to.
+
+
 xargs
 ~~~~~~~~~~
 The ``xargs`` command in UNIX is a command line utility for building an execution pipeline from standard input. Whilst tools like ``grep`` can accept standard input as a parameter, many other tools cannot. Using ``xargs`` allows tools like ``echo``, ``rm`` and ``mkdir`` to accept standard input as arguments.
