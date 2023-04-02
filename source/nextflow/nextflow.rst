@@ -69,8 +69,8 @@ Nextflow provides a separation between the pipeline’s functional logic and the
 Nextflow provides out-of-the-box support for major batch schedulers and cloud platforms such as Sun Grid Engine, SLURM job scheduler, AWS Batch service and Kubernetes. 
 
 Your first script
-~~~~~~~~~~~~~~~~~~~~`
-This is a Nextflow script. It contains;
+~~~~~~~~~~~~~~~~~~~~
+This is a Nextflow script. It contains:
 
 - An optional interpreter directive (“Shebang”) line, specifying the location of the Nextflow interpreter.
 - ``nextflow.enable.dsl=2`` to enable DSL2 syntax.
@@ -142,4 +142,19 @@ The contents of ``wc.nf``::
 	    gunzip -c ${read} | wc -l
 	    """
 	}
+
+You should see output similar to this::
+
+	zhan4429@login01.negishi:[nextflow] $ nextflow run wc.nf 
+	N E X T F L O W  ~  version 23.04.0
+	Launching `wc.nf` [sad_neumann] DSL2 - revision: 9fba5dcc47
+	executor >  local (1)
+	[5c/065cb0] process > NUM_LINES (1) [100%] 1 of 1 ✔
+	SRR23043636_1.fastq.gz 112903040
+
+Nextflow scripting
+~~~~~~~~~~~~~~~~~~~
+Nextflow is a Domain Specific Language (DSL) implemented on top of the Groovy programming language, which in turn is a super-set of the Java programming language. This means that Nextflow can run any Groovy and Java code. It is not necessary to learn Groovy to use Nextflow DSL but it can be useful in edge cases where you need more functionality than the DSL provides.
+
+
 
