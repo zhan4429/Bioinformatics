@@ -156,5 +156,56 @@ Nextflow scripting
 ~~~~~~~~~~~~~~~~~~~
 Nextflow is a Domain Specific Language (DSL) implemented on top of the Groovy programming language, which in turn is a super-set of the Java programming language. This means that Nextflow can run any Groovy and Java code. It is not necessary to learn Groovy to use Nextflow DSL but it can be useful in edge cases where you need more functionality than the DSL provides.
 
+Comments
+++++++++++
+When we write any code it is useful to document it using comments. In Nextflow comments use the same syntax as in the C-family programming languages ::
+
+	// This is a single line comment. Everything after the // is ignored.
+
+	/*
+	   Comments can also
+	   span multiple
+	   lines.
+	 */
+
+Multi-line strings
++++++++++++++++++++
+A block of text that span multiple lines can be defined by delimiting it with triple single ''' or double quotes """::
+
+	text = """
+	    This is a multi-line string
+	    using triple quotes.
+	    """
+
+String interpolation
+++++++++++++++++++++++
+To use a variable inside a single or multi-line double quoted string "" prefix the variable name with a $ to show it should be interpolated::
+
+	
+
+Lists
++++++++++++++++++=
+To store multiple values in a variable we can use a List. A List (also known as array) object can be defined by placing the list items in square brackets and separating items by commas ,::
+
+	kmers = [11,21,27,31]
+
+You can access a given item in the list with square-bracket notation []. These positions are numbered starting at ``0``, so the first element has an index of ``0``::
+
+	kmers = [11,21,27,31]
+	println(kmers[0])
+
+
+We can use negative numbers as indices in Groovy. They count from the end of the list rather than the front: the index -1 gives us the last element in the list, -2 the second to last, and so on. Because of this, kmers[3] and kmers[-1] point to the same element in our example list::
+
+	kmers = [11,21,27,31]
+	//Lists can also be indexed with negative indexes
+	println(kmers[3])
+	println(kmers[-1])
+
+The output::
+
+	31
+	31
+
 
 
