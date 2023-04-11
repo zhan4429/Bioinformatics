@@ -354,3 +354,49 @@ process FASTQC {
 	mkdir fastqc_logs
 	fastqc -o fastqc_logs -f fastq -q ${reads}
 }
+
+
+
+
+
+
+https://training.nextflow.io/basic_training/config/
+
+process {
+  executor="slurm"
+  clusterOptions="--account=cancercenter-dept --qos=cancercenter-dept-b"
+}
+
+apptainer.autoMounts=true
+apptainer.enabled=true
+apptainer.libraryDir='/home/jobrant/.apptainer/cache/library'
+apptainer.cacheDir='/home/jobrant/.apptainer/cache/'
+
+
+
+
+process {
+  executor='slurm'
+  queueSize = 15
+  pollInterval = '5 min'
+  dumpInterval = '6 min'
+  queueStatInterval = '5 min'
+  exitReadTimeout = '13 min'
+  killBatchSize = 30
+  submitRateLimit = '20 min'
+  clusterOptions = '-q debug -t 00:30:00 -C haswell'
+}  
+
+
+Configuration file
+~~~~~~~~~~~~~~~~~~~~~
+When a workflow script is launched, Nextflow looks for a file named nextflow.config in the current directory and in the script base directory (if it is not the same as the current directory). Finally, it checks for the file: ``$HOME/.nextflow/config``.
+
+When more than one of the above files exists, they are merged, so that the settings in the first override the same settings that may appear in the second, and so on.
+
+The default config file search mechanism can be extended by providing an extra configuration file by using the command line option: ``-c <config file>``.
+
+
+
+
+
