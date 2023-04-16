@@ -14,3 +14,13 @@ Overview of the MACS algorithm
    :align: left
 
 
+Analysis pipeline
+~~~~~~~~~~~~~~~~~~~~
+Mapping: UNIQUE!
++++++++++++++++++++
+
+- "bowtie2 -q --phred33 -k1 -p32 -x <index> -U <fastq>| -1 <r1.fastq> -2 <r2.fastq> -S <outfile>"
+
+- Samtools: Convert Sam to sorted Bam file (optional).
+
+
