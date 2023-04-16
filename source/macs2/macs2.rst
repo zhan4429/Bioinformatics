@@ -10,7 +10,7 @@ ChIP comprises a few basic steps: cross-linking a protein to chromatin, shearing
 Overview of the MACS algorithm
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. image:: ../imags/macs.png
+.. image:: ../../imags/macs.png
    :width: 200px
    :height: 100px
    :scale: 50 %
