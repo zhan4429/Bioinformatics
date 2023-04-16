@@ -1,7 +1,31 @@
 .. _backbone-label:
 
-Nextflow
+Running Nextflow in HPC
 ==============================
+
+Disadvantages of Nextflow
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Nextflow makes a lot of duplicate and intermediate file copies as it operates; processing large amounts of data can easily exhaust storage quotas
+- Nextflow uses parallel file systems to synchronize tasks, which is a frequent source of undesired behavior
+
+How to use Nextflow at Purdue RCAC
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Wrapped Nextflow submission to Slurm
++++++++++++++++++++++++++++++++++++++
+
+The easiest method is placing the ``nextflow run ..`` command into a batch script and submitting it to Slurm with ``sbatch``. The manager process will run on the allocated compute node, and all tasks are configured to use the local executor.
+
+The major benefit of this method, besides simplicity, is only the initial submission waits in a Slurm queue; it is a good pattern for a workflow which includes a very large number of small tasks. One should not combine this method with the Nextflow ``Slurm`` executor because the job running the Nextflow manager is likely to end before the requested task is finished waiting in a queue.
+
+There are two significant caveats to running the Nextflow workflow process directly inside a Slurm job allocation:
+
+- The Nextflow working directory must be placed on the $SCRATCH filesystem. Nextflow uses a file locking feature not available on any of the other filesystems.
+- The workflow cannot run longer than the maximum wall time available to a single job in the Slurm QOS being used. This can be partially mitigated by using multiple Slurm submissions in series and passing the -resume flag to Nextflow, but only progress for completely finished tasks will be preserved from one submission to the next.
+
+Nextflow Submits Tasks as Slurm Jobs
++++++++++++++++++++++++++++++++++++++
+
 
 Basic concepts
 ~~~~~~~~~~~~~~~
@@ -402,5 +426,53 @@ publishDir
 +++++++++++++
 The publishDir directive allows you to publish the process output files to a specified folder. For example::
 
+	process foo {
+	    publishDir '/data/chunks'
+
+	    output:
+	    path 'chunk_*'
+
+	    '''
+	    printf 'Hola' | split -b 1 - chunk_
+	    '''
+	}
+
+The above example splits the string Hola into file chunks of a single byte. When complete the ``chunk_*`` output files are published into the ``/data/chunks`` folder.
+
+By default files are published to the target folder creating a symbolic link for each process output that links the file produced into the process working directory. This behavior can be modified using the mode parameter.
+
+Multiple glob patterns
++++++++++++++++++++++++++
+Multiple glob patterns can be specified using a list::
+
+	Channel.fromFilePairs( ['/some/data/SRR*_{1,2}.fastq', '/other/data/QFF*_{1,2}.fastq'] )
+
+Operators
+~~~~~~~~~~~~~~~~~
+collect
+++++++++++++
+The collect operator ``collects`` all the items emitted by a channel to a List and return the resulting object as a sole emission. For example::
+
+	Channel
+	    .of( 1, 2, 3, 4 )
+	    .collect()
+	    .view()
+
+	# outputs
+	[1,2,3,4]
+
+Files and I/O
+~~~~~~~~~~~~~~~~~~~
+Opening files
++++++++++++++++
+To access and work with files, use the file method, which returns a file system object given a file path string::
+
+	myFile = file('some/path/to/my_file.file')
+
+The ``file`` method can reference either files or directories, depending on what the string path refers to in the file system.
+
+When using the wildcard characters *, ?, [] and {}, the argument is interpreted as a glob path matcher and the file method returns a list object holding the paths of files whose names match the specified pattern, or an empty list if no match is found::
+
+	listOfFiles = file('some/path/*.fa')
 
 
