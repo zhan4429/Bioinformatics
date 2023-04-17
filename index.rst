@@ -9,4 +9,4 @@ This is the note from Yucheng Zhang from Purdue Rosen Center for Advanced Comput
 
    source/alphafold/alphafold
    source/snakemake/snakemake
-
+   source/macs2/macs2
