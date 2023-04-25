@@ -433,3 +433,31 @@ The publishDir directive allows you to publish the process output files to a spe
 
 
 
+Bash variables
++++++++++++++
+Nextflow uses the same Bash syntax for variable substitutions, $variable, in strings. However, Bash variables need to be escaped using ``\`` character in front of ``\$variable`` name.
+
+In the example below we will set the bash variable KMERSIZE to the value of ``$params.kmer``, and then use KMERSIZE in our script block.
+
+
+	//process_escape_bash.nf
+	nextflow.enable.dsl=2
+
+	process INDEX {
+
+	  script:
+	  """
+	  #set bash variable KMERSIZE
+	  KMERSIZE=$params.kmer
+	  salmon index -t $projectDir/data/yeast/transcriptome/Saccharomyces_cerevisiae.R64-1-1.cdna.all.fa.gz -i index --kmer \$KMERSIZE
+	  echo "kmer size is $params.kmer"
+	  """
+	}
+
+	params.kmer = 31
+
+	workflow {
+	  INDEX()
+	}
+
+
